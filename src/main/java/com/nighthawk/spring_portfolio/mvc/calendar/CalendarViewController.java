@@ -21,7 +21,6 @@ public class CalendarViewController {
 
     @PostMapping("/add")
     public Event addEvent(@RequestBody Event event) {
-        // Save the event using EventService
         return eventService.saveEvent(event);
     }
 
