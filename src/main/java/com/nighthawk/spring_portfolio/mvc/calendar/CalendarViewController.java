@@ -1,10 +1,13 @@
 package com.nighthawk.spring_portfolio.mvc.calendar;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/events")
@@ -21,11 +24,11 @@ public class CalendarViewController {
 
     @PostMapping("/add")
     public CalendarEvent addEvent(@RequestBody CalendarEvent event) {
-        return eventService.saveEvent(event);
+        return eventService.save(event);
     }
 
     @GetMapping
     public List<CalendarEvent> getAllEvents() {
-        return eventService.getAllEvents();
+        return eventService.findAllByOrderByDateAsc();
     }
 }
