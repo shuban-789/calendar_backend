@@ -1,17 +1,32 @@
 package com.nighthawk.spring_portfolio.mvc.calendar;
 
+import com.nighthawk.spring_portfolio.mvc.calendar.Event;
+import com.nighthawk.spring_portfolio.mvc.calendar.EventService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
-@Controller  // HTTP requests are handled as a controller, using the @Controller annotation
+@RestController
+@RequestMapping("/api/events")
 public class CalendarViewController {
 
-    // CONTROLLER handles GET request for /birds, maps it to birds() method
+    @Autowired
+    private EventService eventService;
+
     @GetMapping("/calendar")
     public String calendar() {
-
         // load HTML VIEW (calendar.html)
         return "calendar";
+    }
 
+    @PostMapping("/add")
+    public Event addEvent(@RequestBody Event event) {
+        // Save the event using EventService
+        return eventService.saveEvent(event);
+    }
+
+    @GetMapping
+    public List<Event> getAllEvents() {
+        return eventService.getAllEvents();
     }
 }
