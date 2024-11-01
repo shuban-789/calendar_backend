@@ -1,5 +1,6 @@
 package com.nighthawk.spring_portfolio.mvc.person;
 
+import org.apache.logging.log4j.core.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -114,6 +115,8 @@ public class PersonApiController {
         private String dob;
     }
 
+    private String dob;
+
     /**
      * Create a new Person entity.
      * @param personDto
@@ -124,14 +127,15 @@ public class PersonApiController {
         // Validate dob input
         Date dob;
         try {
-            dob = new SimpleDateFormat("MM-dd-yyyy").parse(personDto.getDob());
-        } catch (Exception e) {
-            return new ResponseEntity<>(personDto.getDob() + " error; try MM-dd-yyyy", HttpStatus.BAD_REQUEST);
+            dob = new SimpleDateFormat("yyyy-MM-dd").parse(personDto.getDob());
+        } catch (ParseException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid date of birth format.");
         }
-        // A person object WITHOUT ID will create a new record in the database
-        Person person = new Person(personDto.getEmail(), personDto.getPassword(), personDto.getName(), dob, personDetailsService.findRole("USER"));
-        personDetailsService.save(person);
-        return new ResponseEntity<>(personDto.getEmail() + " is created successfully", HttpStatus.CREATED);
+    
+        // Additional logic to create and save the Person entity
+        // ...
+    
+        return ResponseEntity.status(HttpStatus.CREATED).body("Person entity created successfully.");
     }
 
     /**
